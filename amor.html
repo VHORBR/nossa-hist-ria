@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossa História</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            text-align: center;
+            background-color: #2c3e50;
+            color: #f39c12;
+            font-family: "Quicksand", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 10px;
+            font-style: normal;
+            font-size: clamp(16px, 2vw, 24px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        header,
+        footer {
+            background-color: #ff4d4d;
+            color: white;
+            width: 100%;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            position: relative;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+
+
+        .carrossel-container {
+            width: 100%;
+            max-width: 900px;
+            /* Largura máxima aumentada */
+            overflow: hidden;
+            border-radius: 10px;
+            border: 2px solid #ff4d4d;
+        }
+
+        .carrossel {
+            display: flex;
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 0.8);
+            width: fit-content;
+            /* Garante que o carrossel se ajuste ao conteúdo */
+        }
+
+        .carrossel img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+
+        .controles-carrossel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0px;
+            margin-top: 0px;
+        }
+
+        .botoes-carrossel {
+            display: flex;
+            gap: 30px;
+            margin-top: 5%;
+        }
+
+        .botoes-carrossel button,
+        #botao-pausar {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .botoes-carrossel button:hover,
+        #botao-pausar:hover {
+            background-color: #e74c3c;
+        }
+
+
+        .coracao {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background-color: pink;
+            transform: rotate(45deg);
+            opacity: 0.8;
+            z-index: 9999;
+            pointer-events: none;
+            animation: flutuar linear forwards;
+        }
+
+        .coracao::before,
+        .coracao::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: inherit;
+            border-radius: 50%;
+        }
+
+        .coracao::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .coracao::after {
+            left: -10px;
+            top: 0;
+        }
+
+
+        @keyframes flutuar {
+            0% {
+                transform: translateY(0) rotate(45deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-120vh) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+
+        .mensagem-final {
+            margin-top: 30px;
+            max-width: 800px;
+            text-align: center;
+            color: #f39c12;
+            font-size: 20px;
+            padding: 0 20px;
+        }
+
+        .mensagem-final h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #fd3535;
+        }
+
+        #contador {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .galeria {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .galeria img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .galeria img:hover {
+            transform: scale(1.05);
+        }
+
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        #lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            opacity: 0;
+            transform: scale(0.95);
+            animation: zoomIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                background-color: rgba(0, 0, 0, 0);
+            }
+
+            to {
+                background-color: rgba(0, 0, 0, 0.8);
+            }
+        }
+
+        @keyframes zoomIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+
+
+        @media (max-width: 768px) {
+
+            header,
+            footer {
+                font-size: 18px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            #contador {
+                font-size: 18px;
+            }
+        }
+
+
+        @media (min-width: 1024px) {
+            .carrossel-container {
+                max-width: 1200px;
+            }
+
+            .carrossel img {
+                height: 400px;
+            }
+
+            body {
+                padding: 40px;
+            }
+        }
+
+
+        /* Animação de saída */
+        @keyframes fadeOut {
+            from {
+                background-color: rgba(0, 0, 0, 0.8);
+            }
+
+            to {
+                background-color: rgba(0, 0, 0, 0);
+            }
+        }
+
+        @keyframes zoomOut {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            to {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+        }
+
+        #lightbox.fechar {
+            animation: fadeOut 0.4s ease forwards;
+        }
+
+        #lightbox.fechar img {
+            animation: zoomOut 0.4s ease forwards;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        💖 Nossa História 💖
+    </header>
+
+    <main>
+        <h1>Juntos há:</h1>
+        <p id="contador"></p>
+        <h1>Nossa Galeria</h1>
+        <div class="carrossel-container">
+            <div class="carrossel">
+                <img src="Foto2.jpg" alt="Foto 1" onclick="abrirLightbox(this)">
+                <img src="Foto3.jpg" alt="Foto 2" onclick="abrirLightbox(this)">
+                <img src="Foto4.jpg" alt="Foto 3" onclick="abrirLightbox(this)">
+                <img src="Foto5.jpg" alt="Foto 4" onclick="abrirLightbox(this)">
+                <img src="Foto7.jpg" alt="Foto 5" onclick="abrirLightbox(this)">
+                <img src="Foto1.jpg" alt="Foto 6" onclick="abrirLightbox(this)">
+                <img src="Foto6.jpg" alt="Foto 7" onclick="abrirLightbox(this)">
+                <img src="Foto8.jpg" alt="Foto 8" onclick="abrirLightbox(this)">
+                <img src="Foto9.jpg" alt="Foto 9" onclick="abrirLightbox(this)">
+                <img src="Foto10.jpg" alt="Foto 10" onclick="abrirLightbox(this)">
+            </div>
+            <div id="lightbox" onclick="fecharLightbox()">
+                <img id="imagem-ampliada" src=" " alt="Imagem ampliada">
+            </div>
+        </div>
+        <div class="controles-carrossel">
+            <div class="botoes-carrossel">
+                <button onclick="mudarImagem(-1)">⟨</button>
+                <button id="botao-pausar">⏸️ Pausar</button>
+                <button onclick="mudarImagem(1)">⟩</button>
+            </div>
+        </div>
+        <section class="mensagem-final">
+                <h2>É somente o início de uma vida inteira ao seu ladinho!</h2>
+                <p>
+                Cada imagem acima representa um momento especial que vivemos juntos. <br>
+                Sua vinda na minha vida é para sempre, nosso amor se renova todos os dias! <br>
+                Eu te amo minha bia. 💖
+                    </p>
+        </section>
+    </main>
+
+    <footer>
+        💖 Feito com amor, por vidabia💖
+    </footer>
+
+    <script>
+        function plural(valor, singular, plural) {
+            return valor === 1 ? singular : plural;
+        }
+
+        function atualizarContador() {
+            const dataInicio = new Date("2025-04-12T00:00:00");
+            const agora = new Date();
+            const diferenca = agora - dataInicio;
+
+            const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+            document.getElementById("contador").innerText =
+                `${dias} ${plural(dias, 'dia', 'dias')}, ${horas} ${plural(horas, 'hora', 'horas')}, ${minutos} ${plural(minutos, 'minuto', 'minutos')} e ${segundos} ${plural(segundos, 'segundo', 'segundos')}`;
+        }
+
+        setInterval(atualizarContador, 1000);
+        atualizarContador();
+
+        let indice = 0;
+        const imagens = document.querySelectorAll(".carrossel img");
+        const carrossel = document.querySelector(".carrossel");
+
+        function mudarImagem(direcao) {
+            indice += direcao;
+            if (indice < 0) {
+                indice = imagens.length - 1;
+            } else if (indice >= imagens.length) {
+                indice = 0;
+            }
+            const larguraImagem = imagens[0].clientWidth;
+            carrossel.style.transform = `translateX(${-indice * larguraImagem}px)`;
+        }
+
+        let intervalo = setInterval(() => mudarImagem(1), 2000); // tempo ajustado para 2 segundos
+        let pausado = false;
+
+        document.getElementById("botao-pausar").addEventListener("click", () => {
+            if (pausado) {
+                intervalo = setInterval(() => mudarImagem(1), 2000);
+                document.getElementById("botao-pausar").innerText = "⏸️ Pausar";
+            } else {
+                clearInterval(intervalo);
+                document.getElementById("botao-pausar").innerText = "▶️ Retomar";
+            }
+            pausado = !pausado;
+        });
+
+
+
+        function criarCoracao() {
+            const coracao = document.createElement("div");
+            coracao.classList.add("coracao");
+
+            // Posição horizontal aleatória
+            coracao.style.left = Math.random() * 100 + "vw";
+
+            // Tamanho aleatório
+
+            const tamanho = Math.random() * 10 + 15; // mínimo de 15px
+            coracao.style.width = tamanho + "px";
+            coracao.style.height = tamanho + "px";
+
+
+            // Cor aleatória suave
+            const cores = ["#ffb6c1", "#ffc0cb", "#ff69b4", "#ff1493", "#db7093"];
+            coracao.style.backgroundColor = cores[Math.floor(Math.random() * cores.length)];
+
+            // Duração da animação mais lenta
+            const duracao = Math.random() * 5 + 6; // entre 6s e 11s
+            coracao.style.animationDuration = duracao + "s";
+
+            document.body.appendChild(coracao);
+
+            // Remover após a animação
+            setTimeout(() => {
+                coracao.remove();
+            }, duracao * 1000);
+        }
+
+        setInterval(criarCoracao, 800); // frequência de criação
+
+
+        function abrirLightbox(imagem) {
+            const lightbox = document.getElementById("lightbox");
+            const imagemAmpliada = document.getElementById("imagem-ampliada");
+            imagemAmpliada.src = imagem.src;
+            lightbox.style.display = "flex";
+        }
+
+        function fecharLightbox() {
+            document.getElementById("lightbox").style.display = "none";
+        }
+
+
+        function fecharLightbox() {
+            const lightbox = document.getElementById("lightbox");
+            const imagem = document.getElementById("imagem-ampliada");
+
+            // Adiciona a classe de animação de saída
+            lightbox.classList.add("fechar");
+
+            // Aguarda a animação terminar antes de esconder
+            setTimeout(() => {
+                lightbox.style.display = "none";
+                lightbox.classList.remove("fechar");
+                imagem.src = "";
+            }, 400); // tempo igual à duração da animação
+        }
+
+
+
+    </script>
+</body>
+
+</html>
