@@ -129,19 +129,19 @@
         .coracao::after {
             content: '';
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 100%;
+            height: 100%;
             background-color: inherit;
             border-radius: 50%;
         }
 
         .coracao::before {
-            top: -10px;
+            top: -50%;
             left: 0;
         }
 
         .coracao::after {
-            left: -10px;
+            left: -50%;
             top: 0;
         }
 
@@ -418,9 +418,11 @@
 
             // Tamanho aleatório
 
+
             const tamanho = Math.random() * 10 + 15; // mínimo de 15px
             coracao.style.width = tamanho + "px";
             coracao.style.height = tamanho + "px";
+
 
 
             // Cor aleatória suave
